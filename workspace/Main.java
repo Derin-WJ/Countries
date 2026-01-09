@@ -17,6 +17,7 @@ public class Main
   private ImageIcon img;
   private JLabel imageLabel;
   private JLabel outputLabel;
+  private JTextArea userInput;
   
   public static void main(String[] args) {
     // Create the GUI
@@ -77,7 +78,7 @@ public class Main
 
 
 
-  /* You are not required to change anythign below here. You do so at your own risk! */
+  /* You are not required to change anything below here. You do so at your own risk! */
   /* The Main() constructor is finished and will construct the GUI */
 public Main() {
     jFrame.setLayout(new FlowLayout());
@@ -87,14 +88,21 @@ public Main() {
         JButton reviewButton = new JButton("Review");
         JButton quizButton = new JButton("Quiz");
         JButton newButton = new JButton("Next");
+        JTextArea userInput = new JTextArea("");
+
+        userInput = new JTextArea(1, 40);
+        
         jFrame.add(reviewButton);
         jFrame.add(quizButton);
         jFrame.add(newButton);
+        jFrame.add(userInput);
         
         // create a new image icon
         img = new ImageIcon("worldmap.jpg");
         // create a label to display image
         imageLabel = new JLabel(img);
+
+        
         // and one for output
         outputLabel = new JLabel();
         jFrame.add(imageLabel);
