@@ -35,7 +35,13 @@ public class Main
     // Open the data file. Please note that the file structure we're working with requires the full file path as shown here unlike what you saw in runestone where the file name was sufficient.
     File file = new File("/workspaces/Countries/workspace/countries-data.csv");
     Scanner scan = new Scanner(file);
-    catch(IOException e){
+
+      
+
+
+
+
+    }catch(IOException e){
       System.out.println("File couldn't be opened");
     }
     }
