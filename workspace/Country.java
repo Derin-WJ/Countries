@@ -34,9 +34,9 @@ private String imageFile;
   }
   // Write a toString() method that returns a concatenated String of 3 of the instance variables in a sentence like "..'s capital is .. and its primary language is ..."
  
-  public String ToString(){
+  public String toString(){
 
-    return (name + "'s capital is " + capital + ", and the language is " + language + ".");
+    return name + "'s capital is " + capital + " and the language is " + language + ".";
   }
 
 
