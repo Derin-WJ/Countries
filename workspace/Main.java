@@ -11,6 +11,7 @@ public class Main
   private Country[] countryArray = new Country[10];  
   // index of current shown country
   private int index = 0;
+  private int questionType = 0; // 0=country, 1=capital, 2=language ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
   // GUI elements
   private JFrame jFrame = new JFrame("Countries");
@@ -36,7 +37,27 @@ public class Main
     File file = new File("/workspaces/Countries/workspace/countries-data.csv");
     Scanner scan = new Scanner(file);
 
-      
+      int i = 0;
+        while (scan.hasNextLine() && i < countryArray.length)
+    {
+      String line = scan.nextLine();
+
+      if (line.trim().length() == 0) continue;  // skip empty lines
+
+      String[] parts = line.split(",");
+
+      // name, capital, language, imagefile
+      String name = parts[0].trim();
+      String capital = parts[1].trim();
+      String language = parts[2].trim();
+      String imageFile = parts[3].trim();
+
+      Country c = new Country(name, capital, language, imageFile);
+      countryArray[i] = c;
+      i++;
+    }
+
+    scan.close();
 
 
 
@@ -52,41 +73,98 @@ public class Main
     //after running this method your array should contain all 10 countries from inside the countries-data file.
      
     
-  }
+  
 
   /* showCountry() will show the image associated with the current country. It should get the country at index from the countryArray. It should use its get method to get its image file name and use the code below to put the image in the GUI.
   */
   public void showCountry() {
     // Get the country at index from countryArray
-    
+    Country a = countryArray[index];
     // Use its get method to get the its image file name and save it into imagefile variable below instead of worldmap.jpg.
-    String imagefile = "worldmap.jpg";
+    String imagefile = a.getImagefile();
     // Use the following code to create an new Image Icon and put it into the GUI
     img = new ImageIcon("/workspaces/Countries/workspace/"+imagefile);
     imageLabel.setIcon(img);
+    //Ask question
+    outputLabel.setText("What Country is this?");
   }
   
   /* nextButton should increment index. If the index is greater than 9, reset it back to 0. Clear the outputLabel to empty string using setText, and call showCountry();*/
   public void nextButtonClick()
   {
-    
+    index++;
+    if(index > 9){
+      index = 0;
+    } 
+    outputLabel.setText("");
+    showCountry();
   }
   
   /* reviewButton should get the country at index from the countryArray, call its toString() method and save the result, print it out with System.out.println and as an argument to outputLabel.setText( text to print out ); */
   public void reviewButtonClick()
   {
-     
+     Country a = countryArray[index];
+     String info = a.toString();
+
+     System.out.println(info);
+     outputLabel.setText(info);
   }
 
   /* quizButton should clear the outputLabel (outputLabel.setText to empty string), get the country at index from countryArray, print out a question about it like What country is this? and/or What's this country's capital?. Get the user's answer using scan.nextLine() and check if it is equal to the country's data using its get methods and print out correct or incorrect.
   */
   public void quizButtonClick()
   {
-    Scanner scan = new Scanner(System.in); 
-    
-    
-    
+    //Scanner scan = new Scanner(System.in); 
+     
+  
+    Country c = countryArray[index];
+
+    // If user hasn't typed anything yet, ASK a question
+    String typed = userInput.getText().trim();
+
+    if (typed.length() == 0) {
+      // rotate question type each time quiz is clicked with empty box
+      questionType = (questionType + 1) % 3;
+
+      if (questionType == 0) {
+        outputLabel.setText("What country is this?");
+      } else if (questionType == 1) {
+        outputLabel.setText("What is this country's capital?");
+      } else {
+        outputLabel.setText("What is this country's primary language?");
+      }
+      return;
+    }
+
+    // Otherwise: CHECK the answer
+    boolean correct = false;
+
+    if (questionType == 0) {
+      correct = typed.equalsIgnoreCase(c.getName());
+    } else if (questionType == 1) {
+      correct = typed.equalsIgnoreCase(c.getCapital());
+    } else {
+      correct = typed.equalsIgnoreCase(c.getLanguage());
+    }
+
+    if (correct) {
+      outputLabel.setText("Correct!");
+    } else {
+      if (questionType == 0) {
+        outputLabel.setText("Incorrect. It was " + c.getName() + ".");
+      } else if (questionType == 1) {
+        outputLabel.setText("Incorrect. The capital is " + c.getCapital() + ".");
+      } else {
+        outputLabel.setText("Incorrect. The primary language is " + c.getLanguage() + ".");
+      }
+    }
+
+    // clear input after submitting
+    userInput.setText("");
   }
+    
+    
+  
 
 
 
